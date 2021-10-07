@@ -1,11 +1,26 @@
 import React from "react";
 import "./styles.css";
 
-function TodoList({ todos }) {
+function TodoList({ todos, setTodos }) {
+  function handleToggleTodo(todo) {
+    const updatedTodos = todos.map((clicked) =>
+      clicked.id === todo.id ? { ...clicked, done: !clicked.done } : clicked
+    );
+    setTodos(updatedTodos);
+  }
+
   return (
     <ul>
       {todos.map((todo) => (
-        <li key={todo.id}>{todo.text}</li>
+        <li
+          onClick={() => handleToggleTodo(todo)}
+          style={{
+            textDecoration: todo.done ? "line-through" : ""
+          }}
+          key={todo.id}
+        >
+          {todo.text}
+        </li>
       ))}
     </ul>
   );
@@ -46,7 +61,7 @@ export default function App() {
   return (
     <div className="App">
       <h1>Todo List</h1>
-      <TodoList todos={todos} />
+      <TodoList todos={todos} setTodos={setTodos} />
       <AddTodo setTodos={setTodos} />
     </div>
   );
